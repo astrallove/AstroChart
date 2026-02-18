@@ -1,0 +1,59 @@
+name: Agentic Development with Claude and Ralph
+
+on:
+  issues:
+    types: [labeled, edited]
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  reject-pr:
+    if: github.event_name == 'pull_request' && github.event.label.name == 'ralph'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment on PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          existing="$(gh pr view "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}" \
+            --json comments --jq '.comments[].body' \
+            | grep -c '🤖 \*\*Ralph\*\*' || true)"
+          if [[ "${existing}" -eq 0 ]]; then
+            gh pr comment "${{ github.event.pull_request.number }}" \
+              --repo "${{ github.repository }}" \
+              --body "🤖 **Ralph** can only work on issues, not pull requests. Please create an issue and label it with \`ralph\` instead."
+          fi
+
+  ralph:
+    if: >-
+      (github.event.action == 'labeled' && github.event.label.name == 'ralph') ||
+      (github.event.action == 'edited' && contains(github.event.issue.labels.*.name, 'ralph'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    concurrency:
+      group: ralph-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - uses: mdelapenya/claude-ralph-github-action@v0
+        timeout-minutes: 55
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          worker_model: 'opus'
+          reviewer_model: 'opus'
+          github_token: ${{ secrets.GH_PAT_TOKEN }}
+          worker_tone: 'astrologist'
+          reviewer_tone: 'astrologist'
