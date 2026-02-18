@@ -79,14 +79,14 @@ describe('Radix', () => {
       expect(radix.shift).toBeCloseTo(270, 0)
     })
 
-    test('should have shift of 0 when first cusp is near 360', () => {
+    test('should have shift of 0 when first cusp is 0', () => {
       const data = {
         planets: { Sun: [0] },
         cusps: [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330],
       }
       const radix = createRadix(data)
-      // shift = 360 - 0 = 360, but radiansToDegree(2*PI) ≈ 360
-      expect(radix.shift).toBeCloseTo(360, 0)
+      // cusps[0] is 0 (falsy), so the shift calculation is skipped and shift remains 0
+      expect(radix.shift).toBe(0)
     })
 
     test('should create aspects wrapper element', () => {

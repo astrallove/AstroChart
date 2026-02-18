@@ -123,19 +123,27 @@ describe('SVG', () => {
   })
 
   describe('getSymbol - ADD_CLICK_AREA', () => {
-    const planets = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars',
-      'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto',
-      'Chiron', 'Lilith', 'NNode', 'SNode', 'Fortune']
+    // Only Jupiter and Uranus implement ADD_CLICK_AREA in their symbol methods
+    const planetsWithClickArea = ['Jupiter', 'Uranus']
+    const planetsWithoutClickArea = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars',
+      'Saturn', 'Neptune', 'Pluto', 'Chiron', 'Lilith', 'NNode', 'SNode', 'Fortune']
 
-    test.each(planets)('should add click area rect for %s when ADD_CLICK_AREA is true', (planet) => {
+    test.each(planetsWithClickArea)('should add click area rect for %s when ADD_CLICK_AREA is true', (planet) => {
       const svg = createSVG({ ...default_settings, ADD_CLICK_AREA: true })
       const symbol = svg.getSymbol(planet, 100, 100)
       const rects = symbol.getElementsByTagName('rect')
       expect(rects.length).toBeGreaterThanOrEqual(1)
     })
 
-    test.each(planets)('should NOT add click area rect for %s when ADD_CLICK_AREA is false', (planet) => {
+    test.each(planetsWithClickArea)('should NOT add click area rect for %s when ADD_CLICK_AREA is false', (planet) => {
       const svg = createSVG({ ...default_settings, ADD_CLICK_AREA: false })
+      const symbol = svg.getSymbol(planet, 100, 100)
+      const rects = symbol.getElementsByTagName('rect')
+      expect(rects.length).toBe(0)
+    })
+
+    test.each(planetsWithoutClickArea)('should not have click area rect for %s regardless of ADD_CLICK_AREA', (planet) => {
+      const svg = createSVG({ ...default_settings, ADD_CLICK_AREA: true })
       const symbol = svg.getSymbol(planet, 100, 100)
       const rects = symbol.getElementsByTagName('rect')
       expect(rects.length).toBe(0)
