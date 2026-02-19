@@ -1,6 +1,7 @@
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   preset: 'ts-jest',
   collectCoverageFrom: ['./project/src/**/*.{ts,js}'],
-  testEnvironment: 'jsdom'
+  testEnvironment: 'jsdom',
+  testPathIgnorePatterns: ['/node_modules/', '/dist/']
 }

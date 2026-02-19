@@ -6,7 +6,7 @@ describe.only('constructor', () => {
 
     expect(() => {
       chart.radix({planets: {}, cusps: []})
-    }).toThrowError(`Count of 'cusps' values has to be 12.`)
+    }).toThrow(`Count of 'cusps' values has to be 12.`)
   })
 
   test('should throw error when houses are less than 12', () => {
@@ -14,7 +14,7 @@ describe.only('constructor', () => {
 
     expect(() => {
       chart.radix({planets: {}, cusps: [1, 2, 3]})
-    }).toThrowError(`Count of 'cusps' values has to be 12.`)
+    }).toThrow(`Count of 'cusps' values has to be 12.`)
   })
 
 })
