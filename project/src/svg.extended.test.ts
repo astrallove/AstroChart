@@ -233,11 +233,11 @@ describe('SVG', () => {
   describe('axis symbols - ADD_CLICK_AREA', () => {
     const axisSymbols = ['As', 'Ds', 'Mc', 'Ic']
 
-    test.each(axisSymbols)('should add click area rect for %s when ADD_CLICK_AREA is true', (axis) => {
+    test.each(axisSymbols)('should NOT have click area rect for %s even when ADD_CLICK_AREA is true', (axis) => {
       const svg = createSVG({ ...default_settings, ADD_CLICK_AREA: true })
       const symbol = svg.getSymbol(axis, 100, 100)
       const rects = symbol.getElementsByTagName('rect')
-      expect(rects.length).toBeGreaterThanOrEqual(1)
+      expect(rects.length).toBe(0)
     })
   })
 

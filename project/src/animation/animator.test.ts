@@ -5,13 +5,16 @@ import default_settings from '../settings'
 
 // Mock Timer to avoid real animation frames
 jest.mock('./timer', () => {
-  return jest.fn().mockImplementation((callback: (delta: number) => void) => {
-    return {
-      start: jest.fn(),
-      stop: jest.fn(),
-      callback,
-    }
-  })
+  return {
+    __esModule: true,
+    default: jest.fn().mockImplementation((callback: (delta: number) => void, debug: boolean) => {
+      return {
+        start: jest.fn(),
+        stop: jest.fn(),
+        callback,
+      }
+    }),
+  }
 })
 
 function makeTransitMock(planets: Record<string, number[]> = { Sun: [45], Moon: [135] }) {
