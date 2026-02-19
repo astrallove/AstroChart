@@ -1,6 +1,6 @@
 import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
-import stylisticTs from '@stylistic/eslint-plugin-ts'
+import stylistic from '@stylistic/eslint-plugin'
 import globals from 'globals'
 
 export default tseslint.config(
@@ -11,7 +11,7 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   {
     plugins: {
-      '@stylistic/ts': stylisticTs
+      '@stylistic': stylistic
     },
     languageOptions: {
       ecmaVersion: 2018,
@@ -43,7 +43,7 @@ export default tseslint.config(
         'never'
       ],
       'no-var': ['error'],
-      '@stylistic/ts/member-delimiter-style': [
+      '@stylistic/member-delimiter-style': [
         'error',
         {
           'multiline': {
