@@ -304,4 +304,65 @@ describe('AspectCalculator - extended', () => {
       expect(parseFloat(conj!.precision)).toBeLessThan(0)
     })
   })
+
+  describe('radix - inherited property filtering', () => {
+    test('should skip inherited properties on points', () => {
+      const proto = { inherited: [50] }
+      const points = Object.create(proto)
+      points.Sun = [0]
+
+      const calc = new AspectCalculator(
+        { Sun: [0], Moon: [90] },
+        { ...default_settings, ASPECTS: defaultAspects }
+      )
+      const aspects = calc.radix(points)
+      // Should not include any aspect involving 'inherited'
+      const inheritedAspects = aspects.filter(
+        (a) => a.point.name === 'inherited' || a.toPoint.name === 'inherited'
+      )
+      expect(inheritedAspects).toHaveLength(0)
+    })
+
+    test('should skip inherited properties on toPoints', () => {
+      const proto = { inherited: [50] }
+      const toPoints = Object.create(proto)
+      toPoints.Sun = [0]
+      toPoints.Moon = [90]
+
+      const calc = new AspectCalculator(toPoints, { ...default_settings, ASPECTS: defaultAspects })
+      const aspects = calc.radix({ Sun: [0], Moon: [90] })
+      // Should not include any aspect involving 'inherited'
+      const inheritedAspects = aspects.filter(
+        (a) => a.point.name === 'inherited' || a.toPoint.name === 'inherited'
+      )
+      expect(inheritedAspects).toHaveLength(0)
+    })
+  })
+
+  describe('transit - inherited property filtering', () => {
+    test('should skip inherited properties on transit points', () => {
+      const proto = { inherited: [50] }
+      const transitPoints = Object.create(proto)
+      transitPoints.Sun = [1]
+
+      const calc = new AspectCalculator(
+        { Sun: [0] },
+        { ...default_settings, ASPECTS: defaultAspects }
+      )
+      const aspects = calc.transit(transitPoints)
+      const inheritedAspects = aspects.filter((a) => a.point.name === 'inherited')
+      expect(inheritedAspects).toHaveLength(0)
+    })
+
+    test('should skip inherited properties on toPoints in transit', () => {
+      const proto = { inherited: [50] }
+      const toPoints = Object.create(proto)
+      toPoints.Sun = [0]
+
+      const calc = new AspectCalculator(toPoints, { ...default_settings, ASPECTS: defaultAspects })
+      const aspects = calc.transit({ Moon: [1] })
+      const inheritedAspects = aspects.filter((a) => a.toPoint.name === 'inherited')
+      expect(inheritedAspects).toHaveLength(0)
+    })
+  })
 })

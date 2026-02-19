@@ -208,4 +208,50 @@ describe('SVG', () => {
       expect(id).toBe('test-svg-astrology-radix-cusps-1')
     })
   })
+
+  describe('zodiac sign symbols - ADD_CLICK_AREA', () => {
+    const zodiacSigns = [
+      'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
+      'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces',
+    ]
+
+    test.each(zodiacSigns)('should add click area rect for %s when ADD_CLICK_AREA is true', (sign) => {
+      const svg = createSVG({ ...default_settings, ADD_CLICK_AREA: true })
+      const symbol = svg.getSymbol(sign, 100, 100)
+      const rects = symbol.getElementsByTagName('rect')
+      expect(rects.length).toBeGreaterThanOrEqual(1)
+    })
+
+    test.each(zodiacSigns)('should NOT add click area rect for %s when ADD_CLICK_AREA is false', (sign) => {
+      const svg = createSVG({ ...default_settings, ADD_CLICK_AREA: false })
+      const symbol = svg.getSymbol(sign, 100, 100)
+      const rects = symbol.getElementsByTagName('rect')
+      expect(rects.length).toBe(0)
+    })
+  })
+
+  describe('axis symbols - ADD_CLICK_AREA', () => {
+    const axisSymbols = ['As', 'Ds', 'Mc', 'Ic']
+
+    test.each(axisSymbols)('should add click area rect for %s when ADD_CLICK_AREA is true', (axis) => {
+      const svg = createSVG({ ...default_settings, ADD_CLICK_AREA: true })
+      const symbol = svg.getSymbol(axis, 100, 100)
+      const rects = symbol.getElementsByTagName('rect')
+      expect(rects.length).toBeGreaterThanOrEqual(1)
+    })
+  })
+
+  describe('segment', () => {
+    test('should create a segment path element', () => {
+      const svg = createSVG()
+      const segment = svg.segment(400, 400, 300, 0, 30, 200)
+      expect(segment.tagName.toLowerCase()).toBe('path')
+    })
+
+    test('should create a segment with large arc flag', () => {
+      const svg = createSVG()
+      const segment = svg.segment(400, 400, 300, 0, 359.99, 200, 1)
+      expect(segment.tagName.toLowerCase()).toBe('path')
+    })
+  })
 })
