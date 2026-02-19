@@ -24,9 +24,6 @@
     "build:w": "webpack --watch",
     "lint": "eslint ."
   },
-  "overrides": {
-    "minimatch": "^10.2.1"
-  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.9.0",
