@@ -88,9 +88,6 @@ class Transit {
     const universe = this.universe
     const wrapper = getEmptyWrapper(universe, this.paper._paperElementId + '-' + this.settings.ID_TRANSIT + '-' + this.settings.ID_POINTS, this.paper._paperElementId)
 
-    const gap = this.radius - (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO + this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO)
-    const step = (gap - 2 * (this.settings.PADDING * this.settings.SYMBOL_SCALE)) / Object.keys(planets).length
-
     const pointerRadius = this.radius + (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO)
     let startPosition
     let endPosition
