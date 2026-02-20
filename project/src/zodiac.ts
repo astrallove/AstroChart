@@ -320,7 +320,7 @@ class Zodiac {
     let result = false
 
     const minOrbit = (pointPosition - orbit / 2) < 0
-      ? radiansToDegree(2 * Math.PI) - (pointPosition - orbit / 2)
+      ? radiansToDegree(2 * Math.PI) + (pointPosition - orbit / 2)
       : pointPosition - orbit / 2
 
     const maxOrbit = (pointPosition + orbit / 2) >= radiansToDegree(2 * Math.PI)
@@ -328,7 +328,7 @@ class Zodiac {
       : (pointPosition + orbit / 2)
 
     if (minOrbit > maxOrbit) { // crossing over zero
-      if (minOrbit >= planetPosition && planetPosition <= minOrbit) {
+      if (planetPosition >= minOrbit || planetPosition <= maxOrbit) {
         result = true
       }
     } else {
