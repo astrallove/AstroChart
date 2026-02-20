@@ -191,7 +191,12 @@ class Transit {
       const endPosition = getPointPosition(this.cx, this.cy, this.radius + this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO - this.rulerRadius, cusps[i] + this.shift, this.settings)
       const line = this.paper.line(startPosition.x, startPosition.y, endPosition.x, endPosition.y)
       line.setAttribute('stroke', this.settings.LINE_COLOR)
-      line.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE).toString())
+
+      if (mainAxis.includes(i)) {
+        line.setAttribute('stroke-width', (this.settings.SYMBOL_AXIS_STROKE * this.settings.SYMBOL_SCALE).toString())
+      } else {
+        line.setAttribute('stroke-width', (this.settings.CUSPS_STROKE * this.settings.SYMBOL_SCALE).toString())
+      }
 
       wrapper.appendChild(line)
 
