@@ -282,7 +282,7 @@ class Zodiac {
     if (exactExaltation != null && Array.isArray(exactExaltation)) {
       for (let i = 0, ln = exactExaltation.length; i < ln; i++) {
         if (planet.name === exactExaltation[i].name) {
-          if (this.hasConjunction(planet.position, exactExaltation[i].position, exactExaltation[i].orbit)) {
+          if (this.hasConjunction(position, exactExaltation[i].position, exactExaltation[i].orbit)) {
             result.push(this.settings.DIGNITIES_EXACT_EXALTATION)
           }
         }
