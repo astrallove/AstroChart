@@ -337,6 +337,41 @@ describe('Radix', () => {
       radix.addPointsOfInterest({ As: [0] })
       expect(radix.toPoints.Sun).toStrictEqual([0])
     })
+
+    test('should skip inherited properties on points', () => {
+      const radix = createRadix()
+      const proto = { inherited: [50] }
+      const points = Object.create(proto)
+      points.As = [0]
+      radix.addPointsOfInterest(points)
+      expect(radix.toPoints.As).toStrictEqual([0])
+      expect(radix.toPoints.inherited).toBeUndefined()
+    })
+  })
+
+  describe('drawPoints - SHOW_DIGNITIES_TEXT false', () => {
+    test('should not show dignities text when SHOW_DIGNITIES_TEXT is false', () => {
+      const settings = { ...default_settings, SHOW_DIGNITIES_TEXT: false }
+      const radix = createRadix(fullPlanetsData, settings)
+      radix.drawPoints()
+      const pointsWrapper = document.getElementById('chart-astrology-radix-planets')
+      expect(pointsWrapper).not.toBeNull()
+      expect(pointsWrapper!.childNodes.length).toBeGreaterThan(0)
+    })
+  })
+
+  describe('drawPoints - inherited planet properties', () => {
+    test('should skip inherited properties on planets data', () => {
+      const proto = { inherited: [50] }
+      const planets = Object.create(proto)
+      planets.Sun = [0]
+      planets.Moon = [90]
+      const data = { planets, cusps }
+      const radix = createRadix(data)
+      radix.drawPoints()
+      // Should not throw and should only process own properties
+      expect(radix.locatedPoints.length).toBe(2)
+    })
   })
 
   describe('transit', () => {
