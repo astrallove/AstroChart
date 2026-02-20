@@ -23,7 +23,7 @@ class Chart {
   radius: number
   settings: Settings
   constructor (elementId: string, width: number, height: number, settings?: Partial<Settings>) {
-    const chartSettings = default_settings
+    const chartSettings = { ...default_settings }
     if (settings != null) {
       Object.assign(chartSettings, settings)
       if (!('COLORS_SIGNS' in settings)) chartSettings.COLORS_SIGNS = [default_settings.COLOR_ARIES, default_settings.COLOR_TAURUS, default_settings.COLOR_GEMINI, default_settings.COLOR_CANCER, default_settings.COLOR_LEO, default_settings.COLOR_VIRGO, default_settings.COLOR_LIBRA, default_settings.COLOR_SCORPIO, default_settings.COLOR_SAGITTARIUS, default_settings.COLOR_CAPRICORN, default_settings.COLOR_AQUARIUS, default_settings.COLOR_PISCES]
