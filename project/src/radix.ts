@@ -142,9 +142,6 @@ class Radix {
     const universe = this.universe
     const wrapper = getEmptyWrapper(universe, this.paper.root.id + '-' + this.settings.ID_RADIX + '-' + this.settings.ID_POINTS, this.paper.root.id)
 
-    const gap = this.radius - (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO + this.radius / this.settings.INDOOR_CIRCLE_RADIUS_RATIO)
-    const step = (gap - 2 * (this.settings.PADDING * this.settings.SYMBOL_SCALE)) / Object.keys(this.data.planets).length
-
     const pointerRadius = this.radius - (this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO + this.rulerRadius)
     let startPosition
     let endPosition
