@@ -173,7 +173,6 @@ class Transit {
       return
     }
 
-    let bottomPosition
     const universe = this.universe
     const wrapper = getEmptyWrapper(universe, this.paper._paperElementId + '-' + this.settings.ID_TRANSIT + '-' + this.settings.ID_CUSPS, this.paper._paperElementId)
     const numbersRadius = this.radius + ((this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO - this.rulerRadius) / 2)
@@ -187,7 +186,7 @@ class Transit {
     // Cusps
     for (let i = 0, ln = cusps.length; i < ln; i++) {
       // Lines
-      const startPosition = bottomPosition = getPointPosition(this.cx, this.cy, this.radius, cusps[i] + this.shift, this.settings)
+      const startPosition = getPointPosition(this.cx, this.cy, this.radius, cusps[i] + this.shift, this.settings)
       const endPosition = getPointPosition(this.cx, this.cy, this.radius + this.radius / this.settings.INNER_CIRCLE_RADIUS_RATIO - this.rulerRadius, cusps[i] + this.shift, this.settings)
       const line = this.paper.line(startPosition.x, startPosition.y, endPosition.x, endPosition.y)
       line.setAttribute('stroke', this.settings.LINE_COLOR)
