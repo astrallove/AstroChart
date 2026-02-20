@@ -171,6 +171,16 @@ describe('Zodiac - extended', () => {
       expect(result).not.toContain(default_settings.DIGNITIES_EXACT_EXALTATION)
     })
 
+    test('should detect exact exaltation for position >= 360 (normalized)', () => {
+      // 379 mod 360 = 19, which should match exact exaltation at 19
+      const result = zodiac.getDignities(
+        { name: 'Sun', position: 379 },
+        [{ name: 'Sun', position: 19, orbit: 2 }]
+      )
+      expect(result).toContain(default_settings.DIGNITIES_EXALTATION)
+      expect(result).toContain(default_settings.DIGNITIES_EXACT_EXALTATION)
+    })
+
     test('should handle exact exaltation with empty array', () => {
       const result = zodiac.getDignities({ name: 'Sun', position: 19 }, [])
       expect(result).toContain(default_settings.DIGNITIES_EXALTATION)

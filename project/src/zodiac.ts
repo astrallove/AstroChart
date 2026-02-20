@@ -78,14 +78,14 @@ class Zodiac {
     const angle = point % radiansToDegree(2 * Math.PI)
 
     for (let i = 0, ln = this.cusps.length; i < ln; i++) {
-      if (angle >= this.cusps[i] && angle < this.cusps[(i % (ln - 1)) + 1]) {
+      if (angle >= this.cusps[i] && angle < this.cusps[(i + 1) % ln]) {
         return i + 1
       }
     }
 
     // cusp passes over zero
     for (let i = 0, ln = this.cusps.length; i < ln; i++) {
-      if (this.cusps[i] > this.cusps[(i % (ln - 1)) + 1]) {
+      if (this.cusps[i] > this.cusps[(i + 1) % ln]) {
         return i + 1
       }
     }
@@ -282,7 +282,7 @@ class Zodiac {
     if (exactExaltation != null && Array.isArray(exactExaltation)) {
       for (let i = 0, ln = exactExaltation.length; i < ln; i++) {
         if (planet.name === exactExaltation[i].name) {
-          if (this.hasConjunction(planet.position, exactExaltation[i].position, exactExaltation[i].orbit)) {
+          if (this.hasConjunction(position, exactExaltation[i].position, exactExaltation[i].orbit)) {
             result.push(this.settings.DIGNITIES_EXACT_EXALTATION)
           }
         }
@@ -320,7 +320,7 @@ class Zodiac {
     let result = false
 
     const minOrbit = (pointPosition - orbit / 2) < 0
-      ? radiansToDegree(2 * Math.PI) - (pointPosition - orbit / 2)
+      ? radiansToDegree(2 * Math.PI) + (pointPosition - orbit / 2)
       : pointPosition - orbit / 2
 
     const maxOrbit = (pointPosition + orbit / 2) >= radiansToDegree(2 * Math.PI)
@@ -328,7 +328,7 @@ class Zodiac {
       : (pointPosition + orbit / 2)
 
     if (minOrbit > maxOrbit) { // crossing over zero
-      if (minOrbit >= planetPosition && planetPosition <= minOrbit) {
+      if (planetPosition >= minOrbit || planetPosition <= maxOrbit) {
         result = true
       }
     } else {
