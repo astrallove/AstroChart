@@ -78,14 +78,14 @@ class Zodiac {
     const angle = point % radiansToDegree(2 * Math.PI)
 
     for (let i = 0, ln = this.cusps.length; i < ln; i++) {
-      if (angle >= this.cusps[i] && angle < this.cusps[(i % (ln - 1)) + 1]) {
+      if (angle >= this.cusps[i] && angle < this.cusps[(i + 1) % ln]) {
         return i + 1
       }
     }
 
     // cusp passes over zero
     for (let i = 0, ln = this.cusps.length; i < ln; i++) {
-      if (this.cusps[i] > this.cusps[(i % (ln - 1)) + 1]) {
+      if (this.cusps[i] > this.cusps[(i + 1) % ln]) {
         return i + 1
       }
     }
